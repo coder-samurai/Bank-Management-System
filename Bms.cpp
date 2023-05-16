@@ -2,6 +2,7 @@
 #include <fstream>
 #include <windows.h>
 #include <algorithm>
+#include <cstdio>
 
 
 
@@ -205,7 +206,7 @@ void Bms::HomeMenu()
     std::cout << "     ========::[ Home  Menu ]::========     " << std::endl;
     std::cout << "============================================" << std::endl;
     std::cout << "============================================" << std::endl;
-    std::cout << "======> [Welcome, " << Username << "]" << std::endl;
+    std::cout << "======> [Welcome, @" << Username << "]" << std::endl;
     std::cout << "============================================" << std::endl;
     std::cout << "======> [Balance: $" << Balance << "]" << std::endl;
     std::cout << "============================================" << std::endl;
@@ -233,6 +234,17 @@ void Bms::HomeMenu()
     } else if (userOption == "3" || userOption == "account" || userOption == "information" || userOption == "account information")
     {
         AccountInformation();
+    } else if (userOption == "4" || userOption == "modify" || userOption == "modify account")
+    {
+        ModifyAccount();
+    } else if (userOption == "5" || userOption == "sign" || userOption == "out" || userOption == "sign out")
+    {
+        std::cout << "============================================" << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << std::endl;
+        std::cout << "======> Good bye, " << Username << std::endl;
+        Sleep(3000);
+        SignMenu();
     } else if (userOption == "6" || userOption == "exit")
     {
         std::cout << "============================================" << std::endl;
@@ -363,5 +375,129 @@ void Bms::AccountInformation()
 
 void Bms::ModifyAccount()
 {
+    std::string entryPassword;
 
+    std::system("cls");
+    std::cout << "============================================" << std::endl;
+    std::cout << "     ====[ Bank Management System ]====     " << std::endl;
+    std::cout << "     ===========::[Confirm]::==========     " << std::endl;
+    std::cout << "============================================" << std::endl;
+    std::cout << "=====> Enter your password to confirm <=====" << std::endl;
+    std::cout << "============================================" << std::endl;
+    std::cout << "=====> Enter 'back' to go back [Home Menu]." << std::endl;
+    std::cout << "============================================" << std::endl;
+    std::cout << std::endl;
+    std::cout << "=====> Password: ";
+    std::cin >> entryPassword;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "============================================" << std::endl;
+    std::cout << "============================================" << std::endl;
+    std::cout << std::endl;
+
+    if (entryPassword == Password)
+    {
+        std::cout << "=====> Correct password, after 3 seconds the program will turn you to [Modify]." << std::endl;
+
+        std::string userOption;
+        std::system("cls");
+        std::cout << "============================================" << std::endl;
+        std::cout << "     ====[ Bank Management System ]====     " << std::endl;
+        std::cout << "     ===========::[Modify]::===========     " << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << "======> Enter 'back' to go back [Home Menu]." << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << std::endl;
+        std::cout << "======> Press [1] to Username: @" << Username << std::endl;
+        std::cout << "======> Press [2] to Password: " << Password << std::endl;
+        std::cout << std::endl;
+        std::cout << "============================================" << std::endl;
+        std::cout << "======> Option: ";
+        std::cin >> userOption;
+        std::transform(userOption.begin(), userOption.end(), userOption.begin(),::tolower);
+        std::cout << std::endl;
+        std::cout << "============================================" << std::endl;
+
+        if (userOption == "1" || userOption == "username")
+        {
+            std::string newUsername;
+
+            std::cout << "=============::[New Username]::=============" << std::endl;
+            std::cout << "============================================" << std::endl;
+            std::cout << "======> New Username: ";
+            std::cin >> newUsername;
+            std::cout << std::endl;
+
+            std::string fileName(newUsername + ".txt");
+            std::fstream renameUserFile;
+            renameUserFile.open(fileName, std::ios::out);
+            if (renameUserFile)
+            {
+                renameUserFile << Password << ">=" << Balance;
+                renameUserFile.close();
+                Username = newUsername;
+
+                std::string userChoice;
+                std::cout << "============================================" << std::endl;
+                std::cout << "============================================" << std::endl;
+                std::cout << "======> Changed the user successfully." << std::endl;
+                std::cout << "============================================" << std::endl;
+                std::cout << "============================================" << std::endl;
+                std::cout << std::endl;
+                std::cout << "======> Press [1] to Modify Account" << std::endl;
+                std::cout << "======> Press [2] to Home Menu" << std::endl;
+                std::cout << std::endl;
+                std::cout << "============================================" << std::endl;
+                std::cout << "======> Option: ";
+                std::cin >> userChoice;
+                std::transform(userChoice.begin(), userChoice.end(), userChoice.begin(),::tolower);
+
+                if (userChoice == "1" || userChoice == "modify" || userChoice == "modify account")
+                {
+                    ModifyAccount();
+                } else
+                {
+                    HomeMenu();
+                }
+            } else if (userOption == "2" || userOption == "password")
+            {
+
+            } else {
+                renameUserFile.close();
+                std::cout << "============================================" << std::endl;
+                std::cout << "============================================" << std::endl;
+                std::cout << "=====> ERROR: Couldn't change the user." << std::endl;
+                std::cout << std::endl;
+                std::cout << "=====> After 5 seconds, the program will let you try again." << std::endl;
+                Sleep(5000);
+                ModifyAccount();
+            }
+        } else if (userOption == "2")
+        {
+
+        } else if (userOption == "back")
+        {
+            HomeMenu();
+        } else
+        {
+            std::cout << "============================================" << std::endl;
+            std::cout << std::endl;
+            std::cout << "======> ERROR: Choice not found, please check the input." << std::endl;
+            std::cout << std::endl;
+            std::cout << "======> After 5 seconds, the program will let you try again." << std::endl;
+            Sleep(5000);
+            ModifyAccount();
+        }
+    } else if (entryPassword == "back")
+    {
+        HomeMenu();
+    } else
+    {
+        std::cout << "=====> ERROR: Incorrect password, please check the input." << std::endl;
+        std::cout << std::endl;
+        std::cout << "=====> After 5 seconds, the program will let you try again." << std::endl;
+        Sleep(5000);
+        ModifyAccount();
+    }
 }
