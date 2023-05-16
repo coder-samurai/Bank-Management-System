@@ -12,10 +12,13 @@ class Bms
 
     public:
         void SignMenu();
-        void SignUp(std::string username, std::string password, double balance);
-        void SignIn(std::string username, std::string password);
+        void SignUp();
+        void SignIn();
         void HomeMenu();
-        void GetAccountInformation();
+        void Deposit();
+        void Withdraw();
+        void AccountInformation();
+        void ModifyAccount();
 
         Bms();
         ~Bms();
